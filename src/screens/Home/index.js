@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StatusBar, FlatList } from "react-native";
-import { Container, ToolBar, TextToolBar } from "./styles";
+import { Text, View, StatusBar, FlatList, TouchableOpacity } from "react-native";
+import { Container, ToolBar, TextToolBar, IconSignOut } from "./styles";
 import colors from "../../styles/colors";
 import CardQuestion from "../../components/CardQuestion";
 import { api } from "../../components/services/api";
+import { signOut } from "../../components/services/security";
 
-function Home() {
+function Home({navigation}) {
+    StatusBar.setBackgroundColor(colors.primary);
 
     const [isLoadingFeed, setIsLoadingFeed] = useState(false);
     const [questions, setQuestions] = useState([]);
@@ -42,11 +44,21 @@ function Home() {
 
     StatusBar.setBackgroundColor(colors.primary)
 
+      const handleSignOut = () => {
+          signOut();
+          navigation.navigate("Login")
+      }
+
     return(
         <Container>
             <ToolBar>
                 <TextToolBar>Senai Overflow</TextToolBar>
             </ToolBar>
+            <TouchableOpacity
+            onPress={handleSignOut}  
+            style={{position: "absolute", right: 4}}>
+            <IconSignOut name="sign-out"/>
+            </TouchableOpacity>
             <FlatList 
               data={questions}
               style={{width: "100%"}}
